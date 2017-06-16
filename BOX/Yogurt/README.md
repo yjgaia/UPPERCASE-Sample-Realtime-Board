@@ -4,11 +4,21 @@ Yogurt는 [UPPERCASE](http://uppercase.io) 기반 UI 프레임워크입니다.
 ![ScreenShot](https://raw.githubusercontent.com/Hanul/Yogurt/master/YogurtShowcase/R/yogurt.jpg)
 
 ## 설치하기
-1. 프로젝트의 `DEPENDENCY` 파일에 `Hanul/Yogurt`를 추가합니다.
-2. [`ubm`](https://www.npmjs.com/package/ubm)을 이용해 설치합니다.
-    ```
-    ubm install
-    ```
+프로젝트의 `DEPENDENCY` 파일에 `Hanul/Yogurt`를 추가합니다.
+
+## 설정
+- BROWSER_CONFIG.Yogurt.wrapperStyle
+- BROWSER_CONFIG.Yogurt.buttonColor
+- BROWSER_CONFIG.Yogurt.toolbarBackground
+- BROWSER_CONFIG.Yogurt.toolbarBackgroundImage
+- BROWSER_CONFIG.Yogurt.toolbarColor
+- BROWSER_CONFIG.Yogurt.toolbarTextColor
+- BROWSER_CONFIG.Yogurt.bottomBarColor
+- BROWSER_CONFIG.Yogurt.bottomBarTextColor
+- BROWSER_CONFIG.Yogurt.bottomBarHeight
+- BROWSER_CONFIG.Yogurt.menuLayoutMenuWidth
+- BROWSER_CONFIG.Yogurt.menuLayoutHideMenuWinWidth
+- BROWSER_CONFIG.Yogurt.menuLayoutMenuBackgroundColor
 
 ## Wrapper
 DOM들을 감싸는 래퍼를 만듭니다.
@@ -37,13 +47,7 @@ DOM들을 감싸는 래퍼를 만듭니다.
 ## Submit
 작성 완료 버튼을 생성합니다.
 
-## List (TODO)
-개발이 진행중인 기능입니다.
-
 ## Tab (TODO)
-개발이 진행중인 기능입니다.
-
-## Action Sheet (TODO)
 개발이 진행중인 기능입니다.
 
 ## Alert
@@ -54,9 +58,6 @@ DOM들을 감싸는 래퍼를 만듭니다.
 
 ## Prompt
 입력 창을 생성합니다.
-
-## Picker (TODO)
-개발이 진행중인 기능입니다.
 
 ## MenuLayout
 왼쪽에 메뉴를 띄우는 메뉴 레이아웃을 생성합니다.
@@ -76,8 +77,12 @@ DOM들을 감싸는 래퍼를 만듭니다.
 ## Calendar
 달력을 생성합니다.
 
-## Folder Tree
+## Folder Tree (TODO)
 폴더 트리를 생성합니다.
+
+## Vertical Divider
+
+## Horizontal Divider
 
 ## API 문서
 [API](API/README.md)

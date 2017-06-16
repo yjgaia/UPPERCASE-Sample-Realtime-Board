@@ -11,5 +11,10 @@ RealtimeBoard.MAIN = METHOD({
 			uri : ['write', 'update/{id}'],
 			target : RealtimeBoard.Form
 		});
+		
+		RealtimeBoard.MATCH_VIEW({
+			uri : 'view/{id}',
+			target : RealtimeBoard.View
+		});
 	}
 });
