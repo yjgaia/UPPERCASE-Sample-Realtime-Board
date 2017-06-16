@@ -2,8 +2,14 @@ RealtimeBoard.MAIN = METHOD({
 
 	run : (params) => {
 		
-		let list = DIV({
-			c : 'test'
-		}).appendTo(BODY);
+		RealtimeBoard.MATCH_VIEW({
+			uri : '',
+			target : RealtimeBoard.List
+		});
+		
+		RealtimeBoard.MATCH_VIEW({
+			uri : ['write', 'update/{id}'],
+			target : RealtimeBoard.Form
+		});
 	}
 });
