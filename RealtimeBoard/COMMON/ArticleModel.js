@@ -25,9 +25,6 @@ RealtimeBoard.ArticleModel = OBJECT({
 		
 		return {
 			name : 'Article',
-			initData : {
-				loginCount : 0
-			},
 			methodConfig : {
 				create : {
 					valid : VALID(validDataSet)
