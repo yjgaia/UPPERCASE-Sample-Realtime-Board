@@ -7,7 +7,7 @@ RealtimeBoard.View = CLASS({
 	init : (inner, self, params) => {
 		
 		let toolbar;
-		let content;
+		let contentWrapper;
 		let updateButton;
 		let wrapper = Yogurt.Wrapper({
 			c : [
@@ -25,20 +25,26 @@ RealtimeBoard.View = CLASS({
 					title : '글 수정'
 				})
 			}),
-
-			// content
-			content = DIV({
+			
+			contentWrapper = DIV({
 				style : {
 					padding : 20
 				}
 			})]
 		}).appendTo(BODY);
 		
+		let watchingRoom;
+		
 		inner.on('paramsChange', (params) => {
 			
 			let id = params.id;
 			
-			RealtimeBoard.ArticleModel.get(id, (articleData) => {
+			if (watchingRoom !== undefined) {
+				watchingRoom.exit();
+				watchingRoom = undefined;
+			}
+			
+			watchingRoom = RealtimeBoard.ArticleModel.getWatching(id, (articleData, addUpdateHandler, addRemoveHandler) => {
 				if (wrapper !== undefined) {
 					
 					TITLE(articleData.title);
@@ -48,9 +54,12 @@ RealtimeBoard.View = CLASS({
 						RealtimeBoard.GO('update/' + articleData.id);
 					});
 					
-					content.append(articleData.content);
+					let content;
+					contentWrapper.append(content = P({
+						c : articleData.content
+					}));
 					
-					content.append(DIV({
+					contentWrapper.append(DIV({
 						c : A({
 							c : '글 삭제',
 							on : {
@@ -64,6 +73,19 @@ RealtimeBoard.View = CLASS({
 							}
 						})
 					}));
+					
+					addUpdateHandler((articleData) => {
+						
+						TITLE(articleData.title);
+						toolbar.setTitle(articleData.title);
+						
+						content.empty();
+						content.append(articleData.content);
+					});
+					
+					addRemoveHandler(() => {
+						RealtimeBoard.GO('');
+					});
 				}
 			});
 		});
@@ -71,6 +93,11 @@ RealtimeBoard.View = CLASS({
 		inner.on('close', () => {
 			wrapper.remove();
 			wrapper = undefined;
+			
+			if (watchingRoom !== undefined) {
+				watchingRoom.exit();
+				watchingRoom = undefined;
+			}
 		});
 	}
 });

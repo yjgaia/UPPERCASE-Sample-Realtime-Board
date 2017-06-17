@@ -82,7 +82,7 @@ RealtimeBoard.Form = CLASS({
 								RealtimeBoard.ArticleModel.create(data, {
 									notValid : form.showErrors,
 									success : (savedData) => {
-										RealtimeBoard.GO('view/' + savedData.id);
+										RealtimeBoard.GO('');
 									}
 								});
 							}
@@ -103,9 +103,16 @@ RealtimeBoard.Form = CLASS({
 			})]
 		}).appendTo(BODY);
 		
+		let watchingRoom;
+		
 		inner.on('paramsChange', (params) => {
 			
 			id = params.id;
+			
+			if (watchingRoom !== undefined) {
+				watchingRoom.exit();
+				watchingRoom = undefined;
+			}
 			
 			if (id === undefined) {
 				TITLE('글 작성');
@@ -116,10 +123,14 @@ RealtimeBoard.Form = CLASS({
 				TITLE('글 수정');
 				toolbar.setTitle('글 수정');
 				
-				RealtimeBoard.ArticleModel.get(id, (articleData) => {
+				watchingRoom = RealtimeBoard.ArticleModel.getWatching(id, (articleData, addUpdateHandler, addRemoveHandler) => {
 					if (wrapper !== undefined) {
 						
 						form.setData(articleData);
+						
+						addRemoveHandler(() => {
+							RealtimeBoard.GO('');
+						});
 					}
 				});
 			}
@@ -128,6 +139,11 @@ RealtimeBoard.Form = CLASS({
 		inner.on('close', () => {
 			wrapper.remove();
 			wrapper = undefined;
+			
+			if (watchingRoom !== undefined) {
+				watchingRoom.exit();
+				watchingRoom = undefined;
+			}
 		});
 	}
 });

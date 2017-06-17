@@ -3,7 +3,7 @@ RealtimeBoard.MAIN = METHOD({
 	run : (params) => {
 		
 		RealtimeBoard.MATCH_VIEW({
-			uri : '',
+			uri : ['', 'list/{page}'],
 			target : RealtimeBoard.List
 		});
 		

@@ -9,11 +9,19 @@ RealtimeBoard.List = CLASS({
 		TITLE('실시간 게시판');
 		
 		let list;
+		let paging;
 		let wrapper = Yogurt.Wrapper({
 			c : [
 			
 			Yogurt.Toolbar({
-				title : '실시간 게시판',
+				title : A({
+					c : '실시간 게시판',
+					on : {
+						tap : () => {
+							RealtimeBoard.GO('');
+						}
+					}
+				}),
 				right : Yogurt.ToolbarButton({
 					icon : FontAwesome.GetIcon('pencil'),
 					title : '글 작성',
@@ -25,39 +33,134 @@ RealtimeBoard.List = CLASS({
 				})
 			}),
 			
-			list = UUI.LIST({
+			DIV({
 				style : {
 					padding : 20
-				}
+				},
+				c : [
+					list = UUI.LIST(),
+					paging = DIV({
+						style : {
+							marginTop : 15
+						}
+					})
+				]
 			})]
 		}).appendTo(BODY);
 		
-		RealtimeBoard.ArticleModel.find({
-			sort : {
-				createTime : -1
-			},
-			count : 10
-		}, (articleDataSet) => {
-			
-			EACH(articleDataSet, (articleData) => {
+		let articleCountPerPage = 10;
+		
+		RealtimeBoard.ArticleModel.count((count) => {
+			REPEAT(Math.ceil(count / articleCountPerPage), (page) => {
+				page += 1;
 				
-				list.append(LI({
+				paging.append(A({
 					style : {
-						cursor : 'pointer'
+						marginRight : 5
 					},
-					c : articleData.title,
+					c : page,
 					on : {
 						tap : () => {
-							RealtimeBoard.GO('view/' + articleData.id);
+							RealtimeBoard.GO('list/' + page);
 						}
 					}
 				}));
+			});
+		});
+		
+		let articleWatchingRoom;
+		inner.on('paramsChange', (params) => {
+			
+			let page = REAL(params.page);
+			if (page === undefined) {
+				page = 1;
+			}
+			
+			list.removeAllItems();
+			
+			if (articleWatchingRoom !== undefined) {
+				articleWatchingRoom.exit();
+			}
+			
+			articleWatchingRoom = RealtimeBoard.ArticleModel.onNewAndFindWatching({
+				sort : {
+					createTime : -1
+				},
+				start : (page - 1) * articleCountPerPage,
+				count : articleCountPerPage
+			}, (articleData, addUpdateHandler, addRemoveHandler, exit, isNewData) => {
+				
+				if (page === 1 || isNewData !== true) {
+					
+					let item;
+					let title;
+					
+					list.addItem({
+						isFirst : true,
+						key : articleData.id,
+						item : item = LI({
+							style : {
+								cursor : 'pointer',
+								border : '1px solid #ddd',
+								marginTop : -1
+							},
+							c : title = DIV({
+								style : {
+									padding : 10
+								},
+								c : articleData.title
+							}),
+							on : {
+								tap : () => {
+									RealtimeBoard.GO('view/' + articleData.id);
+								}
+							}
+						})
+					});
+					
+					if (isNewData === true) {
+						
+						ANIMATE({
+							node : item,
+							keyframes : {
+								from : {
+									height : 0,
+									overflow : 'hidden',
+									backgroundColor : 'yellow'
+								},
+								to : {
+									height : item.getInnerHeight(),
+									overflow : item.getStyle('overflow'),
+									backgroundColor : '#fff'
+								}
+							}
+						});
+					}
+					
+					addUpdateHandler((articleData) => {
+						title.empty();
+						title.append(articleData.title);
+					});
+					
+					addRemoveHandler(() => {
+						UANI.HIDE_SLIDE_UP({
+							node : item
+						}, () => {
+							list.removeItem(articleData.id);
+						});
+					});
+				}
 			});
 		});
 
 		inner.on('close', () => {
 			wrapper.remove();
 			wrapper = undefined;
+			
+			if (articleWatchingRoom !== undefined) {
+				articleWatchingRoom.exit();
+				articleWatchingRoom = undefined;
+			}
 		});
 	}
 });
