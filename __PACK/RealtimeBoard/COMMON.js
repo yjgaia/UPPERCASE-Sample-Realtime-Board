@@ -1,0 +1,1 @@
+RealtimeBoard.ArticleModel=OBJECT({preset:()=>{return RealtimeBoard.MODEL},params:()=>{let e={title:{notEmpty:!0,size:{max:255}},content:{notEmpty:!0,size:{max:3e3}}};return{name:"Article",methodConfig:{create:{valid:VALID(e)},update:{valid:VALID(e)}}}}});

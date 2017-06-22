@@ -64,7 +64,7 @@ RealtimeBoard.View = CLASS({
 							c : '글 삭제',
 							on : {
 								tap : () => {
-									if (confirm('정말로 삭제하시겠습니까?') === true) {
+									if (confirm('정말 글을 삭제하시겠습니까?') === true) {
 										RealtimeBoard.ArticleModel.remove(id, () => {
 											RealtimeBoard.GO('');
 										});

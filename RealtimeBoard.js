@@ -5,7 +5,7 @@ BOOT({
         isDevMode : true,
 		defaultBoxName : 'RealtimeBoard',
 		webServerPort : 8530,
-		socketServerPort : 8531
+		socketServerPort : 8529
 	},
 	
 	NODE_CONFIG : {
