@@ -45,6 +45,23 @@ RealtimeBoard.List = CLASS({
 						}
 					})
 				]
+			}),
+			
+			// footer
+			DIV({
+				style : {
+					padding : 20,
+					paddingTop : 0,
+					textAlign : 'center'
+				},
+				c : A({
+					style : {
+						color : '#0366d6'
+					},
+					href : 'https://github.com/Hanul/UPPERCASE-Sample-Realtime-Board',
+					target : '_blank',
+					c : '소스 보기'
+				})
 			})]
 		}).appendTo(BODY);
 		
